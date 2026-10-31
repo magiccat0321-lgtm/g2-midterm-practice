@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>二年級上學期期中考練習</title>
+<style>
+:root{
+  --bg:#fff7e0;--ink:#3b2f20;--card:#ffffff;--line:#f1e3bd;
+  --chi:#ff7a59;--chi-soft:#ffe3da;
+  --mat:#2f8fff;--mat-soft:#dcedff;
+  --ok:#22a06b;--ok-soft:#ddf5e8;--bad:#e5484d;--bad-soft:#ffe3e5;
+  --accent:#ffb703;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC","Heiti TC",sans-serif;
+  font-size:20px;line-height:1.6;min-height:100vh}
+#app{max-width:760px;margin:0 auto;padding:16px 16px 60px}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;border:0;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible{outline:3px solid #2f8fff;outline-offset:2px}
+
+/* 首頁 */
+.hero{text-align:center;padding:14px 0 6px}
+.hero .mascot{font-size:64px;line-height:1;animation:bob 2.4s ease-in-out infinite}
+.hero h1{margin:6px 0 2px;font-size:1.7rem;letter-spacing:.04em}
+.hero p{margin:0;color:#8a7352}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+.panel{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px 16px;margin:14px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row label{font-weight:700}
+.name{flex:1;min-width:120px;font:inherit;padding:8px 12px;border:2px solid var(--line);border-radius:12px;background:#fffdf6}
+.pill{padding:8px 14px;border-radius:999px;background:#f6ecd0;font-weight:700}
+.pill.on{background:var(--accent);box-shadow:0 3px 0 #c98f00}
+.hint{font-size:.85rem;color:#8a7352;margin:6px 0 0}
+.subj{border-radius:24px;padding:14px;margin:16px 0}
+.subj.chi{background:var(--chi-soft);border:3px solid var(--chi)}
+.subj.mat{background:var(--mat-soft);border:3px solid var(--mat)}
+.subj h2{margin:0 0 10px;font-size:1.4rem}
+.papers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.paper{background:#fff;border-radius:16px;padding:12px 14px;text-align:left;display:flex;flex-direction:column;gap:2px;
+  box-shadow:0 4px 0 rgba(0,0,0,.12);transition:transform .12s}
+.paper:hover{transform:translateY(-2px)}
+.paper:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.paper .pt{font-size:1.25rem;font-weight:800}
+.paper .ps{font-size:.9rem;color:#6b5a40;line-height:1.4}
+.paper .pb{font-size:.85rem;margin-top:4px;color:#b07900;font-weight:700}
+
+/* 作答 */
+.top{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.ghost{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 12px;font-size:.9rem}
+.ttl{font-weight:800;text-align:center;flex:1}
+.cnt{font-weight:800;background:#fff;border:2px solid var(--line);border-radius:12px;padding:4px 12px;font-size:.95rem}
+.bar{height:14px;background:#fff;border:2px solid var(--line);border-radius:999px;margin:10px 0;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#ffb703,#ff7a59);border-radius:999px;transition:width .3s}
+.qcard{background:var(--card);border:3px solid var(--line);border-radius:24px;padding:18px 18px 20px}
+.qno{display:inline-block;background:var(--accent);border-radius:999px;padding:0 14px;font-weight:800;font-size:.9rem}
+.stem{font-size:1.35rem;margin:10px 0 14px;line-height:1.7;font-weight:500}
+.big{font-size:2rem;font-weight:800;text-align:center;margin:8px 0;letter-spacing:.06em}
+.hl{color:#d6336c;font-size:1.15em}
+.zy{display:inline-block;background:#fff4cf;border:2px dashed #e5b800;border-radius:12px;padding:2px 16px;font-size:1.8rem;letter-spacing:.12em}
+.passage{background:#f2f9ff;border:2px solid #bcdcff;border-radius:16px;padding:8px 14px;margin:10px 0;font-size:1.15rem}
+.passage p{margin:4px 0;text-indent:2em}
+.ptag{font-weight:800;color:#2f6fb5;font-size:.9rem}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;background:#fffdf6;border:3px solid var(--line);border-radius:16px;
+  padding:10px 14px;text-align:left;font-size:1.3rem;min-height:56px;transition:transform .1s}
+.opt:active{transform:scale(.98)}
+.opt .lt{flex:none;width:36px;height:36px;border-radius:50%;background:#f1e3bd;font-weight:800;display:grid;place-items:center;font-size:1.05rem}
+.opt.sel{border-color:var(--mat);background:var(--mat-soft)}
+.opt.sel .lt{background:var(--mat);color:#fff}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .lt{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .lt{background:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+.fillrow{display:flex;align-items:center;gap:10px;margin-top:6px}
+.fillrow input{width:11em;max-width:100%;font:inherit;font-size:1.8rem;font-weight:800;text-align:center;padding:8px;
+  border:3px solid var(--mat);border-radius:16px;background:#f7fbff}
+.fillrow input.right{border-color:var(--ok);background:var(--ok-soft)}
+.fillrow input.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.unit{font-size:1.3rem}
+.fb{margin-top:16px;border-radius:16px;padding:10px 14px;font-size:1.1rem}
+.fb.ok{background:var(--ok-soft);border:2px solid var(--ok)}
+.fb.no{background:var(--bad-soft);border:2px solid var(--bad)}
+.fb b.t{display:block;font-size:1.3rem}
+.fb .ex{margin-top:2px;color:#4a3d2a;font-size:1rem}
+.actions{display:flex;justify-content:center;margin-top:18px}
+.go{background:var(--ok);color:#fff;font-weight:800;font-size:1.4rem;padding:12px 44px;border-radius:999px;box-shadow:0 5px 0 #157a50}
+.go:active{transform:translateY(3px);box-shadow:0 2px 0 #157a50}
+.go:disabled{background:#c9c2b0;box-shadow:0 5px 0 #a39c89;cursor:not-allowed}
+.ruler{display:block;width:100%;max-width:560px;margin:8px auto}
+.grid{text-align:center;font-size:2rem;line-height:1.35;margin:8px 0;letter-spacing:.1em}
+pre.vert{font-family:"Courier New",Consolas,monospace;font-size:2.2rem;line-height:1.3;width:fit-content;margin:8px auto;
+  background:#fffdf0;border:2px dashed #e5b800;border-radius:12px;padding:6px 22px;text-align:right}
+
+/* 成績 */
+.result{text-align:center}
+.score{font-size:4.5rem;font-weight:900;color:var(--chi);line-height:1.1}
+.score small{font-size:1.4rem;color:#8a7352}
+.stars{font-size:2.6rem;letter-spacing:.2em}
+.msg{font-size:1.4rem;font-weight:800;margin:6px 0 12px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0}
+.btn{padding:10px 20px;border-radius:999px;font-weight:800;background:#fff;border:3px solid var(--line);box-shadow:0 4px 0 rgba(0,0,0,.12)}
+.btn.main{background:var(--mat);color:#fff;border-color:var(--mat)}
+.btn.warn{background:var(--accent);border-color:var(--accent)}
+.wr{background:#fff;border:2px solid var(--bad);border-radius:16px;padding:10px 14px;margin:10px 0;text-align:left}
+.wr .stem{font-size:1.1rem;margin:2px 0 6px}
+.wr .you{color:var(--bad);font-weight:700}
+.wr .rt{color:var(--ok);font-weight:700}
+.allok{background:var(--ok-soft);border-radius:16px;padding:12px;font-weight:800}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9}
+.confetti span{position:absolute;top:-40px;font-size:28px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+footer{text-align:center;color:#8a7352;font-size:.8rem;margin-top:24px}
+@media (max-width:520px){body{font-size:18px}.stem{font-size:1.2rem}.big{font-size:1.7rem}.hero h1{font-size:1.4rem}}
+@media print{.actions,.top,.bar{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ============ 工具 ============ */
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[R(0,a.length-1)];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const app=typeof document!=='undefined'?document.getElementById('app'):null;
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+
+/* ============ 題型建構 ============ */
+const mc=(stem,correct,wrongs,exp,x={})=>({t:'mc',stem,correct:String(correct),wrongs:wrongs.map(String),exp,...x});
+const tf=(s,v,exp)=>({t:'mc',stem:'判斷對錯：'+s,correct:v?'○ 對':'✕ 錯',wrongs:[v?'✕ 錯':'○ 對'],fixed:['○ 對','✕ 錯'],exp});
+const fill=(stem,ans,exp)=>({t:'fill',stem,accept:[].concat(ans).map(String),exp});
+const prep=q=>q.t==='mc'?{...q,opts:q.fixed||shuf([q.correct,...q.wrongs])}:{...q};
+
+/* ============ 國語題庫 ============ */
+const zy=s=>`<span class="zy">${s}</span>`;
+const B=s=>`<b class="hl">${s}</b>`;
+const z2w=(z,c,w)=>mc(`看注音，選出正確的國字：<div class="big">${zy(z)}</div>`,c,w,`${c} 的注音是 ${z}。`);
+const w2z=(word,c,w,exp)=>mc(`「${B(word)}」的注音是哪一個？`,c,w,exp||`${word} 的注音是 ${c}。`);
+const liang=(thing,c,w)=>mc(`量詞練習：一（　）${thing}`,c,w,`要說「一${c}${thing}」。`);
+const opp=(a,c,w)=>mc(`「${B(a)}」的相反詞是哪一個？`,c,w,`${a} ↔ ${c}`);
+const bu=(ch,c,w,exp)=>mc(`「${B(ch)}」的部首是哪一個？`,c,w,exp);
+const bh=(ch,n,w,exp)=>mc(`「${B(ch)}」共有幾畫？`,n+' 畫',w.map(x=>x+' 畫'),exp);
+const rd=(P,stem,c,w,exp)=>mc(stem,c,w,exp,{passage:P});
+
+const P_A=`<p>早晨，太陽公公起床了。小鳥在樹上唱歌，花兒張開了笑臉。我背著書包走到學校，看見同學們都在向老師問好。今天真是美好的一天！</p>`;
+const P_B=`<p>小明有一隻小貓，牠的毛是白色的，眼睛像兩顆藍寶石。每天放學回家，小貓都會跑到門口迎接小明。小明最喜歡和小貓一起玩球。</p>`;
+const P_C=`<p>秋天到了，樹葉變黃了。風一吹，葉子像小蝴蝶一樣飛下來。媽媽帶我到公園散步，我撿了一片金黃色的葉子，把它夾在書裡。</p>`;
+
+const CHI_A=[
+  z2w('ㄒㄩㄝˊ ㄒㄧㄠˋ','學校',['學交','單校']),
+  w2z('老師','ㄌㄠˇ ㄕ',['ㄌㄠˊ ㄕˋ','ㄋㄠˇ ㄕ']),
+  z2w('ㄆㄥˊ ㄧㄡˇ','朋友',['明友','朋有']),
+  w2z('彩虹','ㄘㄞˇ ㄏㄨㄥˊ',['ㄘㄞˇ ㄍㄨㄥˋ','ㄘㄞˋ ㄏㄨㄥˊ']),
+  mc('選出適合的字：小鳥在樹上（　）歌。','唱',['昌','倡'],'「唱歌」的「唱」是口字旁，唱歌要用嘴巴。'),
+  mc('量詞練習：一（　）魚','條',['本','張'],'魚的身體長長的，可以說「一條魚」。'),
+  liang('傘','把',['本','朵']),
+  liang('花','朵',['輛','件']),
+  opp('高','矮',['長','大']),
+  opp('快','慢',['好','小']),
+  bu('河','氵（三點水）',['可','丁'],'河和水有關，部首是「氵」。'),
+  bu('草','艹（草字頭）',['早','日'],'草是植物，部首是「艹」。'),
+  bh('山',3,[4,5],'山的筆畫是：豎、豎折、豎，共 3 畫。'),
+  bh('好',6,[5,7],'「女」3 畫 ＋「子」3 畫 ＝ 6 畫。'),
+  tf('春、夏、秋、冬是一年的四個季節。',true,'一年有春、夏、秋、冬四個季節。'),
+  tf('「蝴蝶」的「蝴」是「木」部。',false,'蝴蝶是昆蟲，所以是「虫」字旁，不是木字旁。'),
+  mc('選出正確的標點符號：你今天吃早餐了嗎（　）','？',['。','！'],'問別人問題，句尾要用問號「？」。'),
+  rd(P_A,'誰在樹上唱歌？','小鳥',['花兒','同學'],'短文寫著「小鳥在樹上唱歌」。'),
+  rd(P_A,'「我」背著書包要去哪裡？','學校',['公園','動物園'],'短文寫著「我背著書包走到學校」。'),
+  rd(P_A,'同學們看見老師，都做了什麼事？','向老師問好',['跑去玩耍','一起唱歌'],'短文寫著「同學們都在向老師問好」。')
+];
+const CHI_B=[
+  z2w('ㄎㄨㄞˋ ㄌㄜˋ','快樂',['塊樂','快落']),
+  z2w('ㄍㄨㄥ ㄩㄢˊ','公園',['工園','公圓']),
+  w2z('蘋果','ㄆㄧㄥˊ ㄍㄨㄛˇ',['ㄆㄧㄣˊ ㄍㄨㄛˇ','ㄆㄧㄥˊ ㄍㄨㄛˊ']),
+  w2z('謝謝','ㄒㄧㄝˋ ㄒㄧㄝ˙',['ㄒㄧㄝˋ ㄒㄧㄝˋ','ㄒㄧㄚˋ ㄒㄧㄝ˙'],'謝謝 的第二個「謝」要念輕聲，注音是 ㄒㄧㄝ˙。'),
+  mc('量詞練習：天空有一（　）白雲。','朵',['條','張'],'雲可以說「一朵雲」。'),
+  liang('車','輛',['隻','條']),
+  liang('衣服','件',['顆','把']),
+  liang('樹','棵',['張','隻']),
+  opp('多','少',['大','長']),
+  opp('開','關',['看','快']),
+  opp('前','後',['上','右']),
+  bu('說','言（言字旁）',['兌','口'],'說話和言語有關，部首是「言」。'),
+  bu('媽','女（女字旁）',['馬','二'],'媽媽是女生，部首是「女」。'),
+  bh('水',4,[3,5],'水的筆畫：豎鉤、橫撇、撇、捺，共 4 畫。'),
+  bh('花',7,[6,8],'「艹」3 畫 ＋「化」4 畫 ＝ 7 畫。'),
+  mc('草地看起來（　）的。','綠油油',['紅通通','黑漆漆'],'「綠油油」可以形容草地很翠綠。'),
+  mc('哪一句話是通順的？','媽媽在廚房煮飯。',['廚房煮飯在媽媽。','煮飯媽媽廚房在。'],'句子要說清楚「誰」「在哪裡」「做什麼」。'),
+  rd(P_B,'小貓的毛是什麼顏色？','白色',['黑色','黃色'],'短文寫著「牠的毛是白色的」。'),
+  rd(P_B,'小貓什麼時候跑到門口迎接小明？','放學回家時',['早上起床時','晚上睡覺時'],'短文寫著「每天放學回家，小貓都會跑到門口迎接小明」。'),
+  rd(P_B,'小明最喜歡和小貓一起做什麼？','玩球',['唱歌','看書'],'短文最後一句：「小明最喜歡和小貓一起玩球」。')
+];
+const CHI_C=[
+  z2w('ㄕㄨ ㄅㄠ','書包',['書飽','輸包']),
+  z2w('ㄧㄢˇ ㄐㄧㄥ','眼睛',['眼晴','眼情'],'「眼睛」是目字旁；日字旁的「晴」是晴天。'),
+  z2w('ㄩㄝˋ ㄌㄧㄤˋ','月亮',['日亮','月完']),
+  w2z('蝴蝶','ㄏㄨˊ ㄉㄧㄝˊ',['ㄏㄨˊ ㄉㄧㄝˇ','ㄍㄨˊ ㄉㄧㄝˊ']),
+  mc('選出正確的字：太陽出來了，今天是（　）天。','晴',['睛','情'],'「晴天」和太陽有關，用日字旁的「晴」。'),
+  mc('選出正確的字：明天（　）見！','再',['在','載'],'「再見」是下次再見面的意思。'),
+  mc('我家有一隻小狗，（　）很可愛。','牠',['她','他'],'動物用「牠」，女生用「她」，男生用「他」。'),
+  liang('紙','張',['條','棵']),
+  liang('糖果','顆',['把','輛']),
+  liang('書','本',['隻','條']),
+  opp('大','小',['高','多']),
+  opp('冷','熱',['冰','凍']),
+  bu('跑','足（足字旁）',['包','口'],'跑步要用腳，部首是「足」。'),
+  bu('想','心',['木','目'],'想是用心去想，部首是下面的「心」。'),
+  bh('木',4,[3,5],'木的筆畫：橫、豎、撇、捺，共 4 畫。'),
+  tf('星期五的後一天是星期日。',false,'順序是星期五、星期六、星期日，星期五的後一天是星期六。'),
+  mc('選出正確的標點符號：哇！這條彩虹好漂亮（　）','！',['？','，'],'讚嘆的時候，句尾用驚嘆號「！」。'),
+  rd(P_C,'秋天到了，樹葉變成什麼顏色？','黃色',['綠色','藍色'],'短文寫著「樹葉變黃了」。'),
+  rd(P_C,'葉子飛下來的樣子像什麼？','小蝴蝶',['小鳥','星星'],'短文寫著「葉子像小蝴蝶一樣飛下來」。'),
+  rd(P_C,'「我」把金黃色的葉子夾在哪裡？','書裡',['口袋裡','鉛筆盒裡'],'短文最後寫著「把它夾在書裡」。')
+];
+
+/* ============ 數學題目產生器（每次數字都不同） ============ */
+const NAMES=['小明','小美','小華','小安','阿傑','小玲','小宇','小雅'];
+const sym=(a,b)=>a>b?'＞':a<b?'＜':'＝';
+const cmpQ=(L,Rr,a,b,exp)=>mc(`比一比，在（　）裡填入 ＞、＜ 或 ＝：<div class="big">${L} （　） ${Rr}</div>`,sym(a,b),[],exp,{fixed:['＞','＜','＝']});
+const vert=(a,op,b)=>{const w=Math.max(String(a).length,String(b).length);
+  return `<pre class="vert">${' '+String(a).padStart(w)}\n${op+String(b).padStart(w)}\n${'-'.repeat(w+1)}</pre>`};
+const eq2=(a,b,op)=>`<div class="big">${a} ${op} ${b} ＝（　）</div>`;
+
+function rulerSVG(s,e){
+  const cm=12,u=40,pad=24,W=cm*u+pad*2,H=100;
+  let g=`<svg class="ruler" viewBox="0 0 ${W} ${H}" role="img" aria-label="尺和彩帶">`;
+  g+=`<rect x="${pad+s*u}" y="8" width="${(e-s)*u}" height="26" rx="6" fill="#ffb703" stroke="#c77d00" stroke-width="2"/>`;
+  g+=`<line x1="${pad+s*u}" y1="34" x2="${pad+s*u}" y2="46" stroke="#c77d00" stroke-width="2" stroke-dasharray="3 3"/>`;
+  g+=`<line x1="${pad+e*u}" y1="34" x2="${pad+e*u}" y2="46" stroke="#c77d00" stroke-width="2" stroke-dasharray="3 3"/>`;
+  g+=`<rect x="${pad-12}" y="46" width="${cm*u+24}" height="50" rx="5" fill="#fff3b0" stroke="#c9a400" stroke-width="2"/>`;
+  for(let i=0;i<=cm;i++){
+    const x=pad+i*u;
+    g+=`<line x1="${x}" y1="46" x2="${x}" y2="68" stroke="#7a5c00" stroke-width="2"/>`;
+    if(i<cm)g+=`<line x1="${x+u/2}" y1="46" x2="${x+u/2}" y2="58" stroke="#7a5c00" stroke-width="1.5"/>`;
+    g+=`<text x="${x}" y="88" text-anchor="middle" font-size="17" font-weight="700" fill="#5c4400">${i}</text>`;
+  }
+  return g+'</svg>';
+}
+
+const G={
+  compose(){const a=R(1,9),b=R(0,9),c=R(0,9);
+    return fill(`<div class="big">${a} 個百、${b} 個十、${c} 個一</div>合起來是多少？`,a*100+b*10+c,`${a*100} ＋ ${b*10} ＋ ${c} ＝ ${a*100+b*10+c}`)},
+  digit(){const N=R(100,999),p=pick([['百位',100],['十位',10],['個位',1]]);
+    return fill(`<div class="big">${N}</div>這個數的${p[0]}數字是多少？`,Math.floor(N/p[1])%10,`${N} 的百位是 ${Math.floor(N/100)}，十位是 ${Math.floor(N/10)%10}，個位是 ${N%10}。`)},
+  seq(){const s=pick([1,10,100,-1,-10,-100]);
+    let st;if(s===1)st=R(100,990);else if(s===10)st=R(100,900);else if(s===100)st=R(100,500);
+    else if(s===-1)st=R(105,999);else if(s===-10)st=R(150,990);else st=R(500,990);
+    const t=[0,1,2,3].map(i=>st+s*i),m=R(0,1)?3:1;
+    const show=t.map((x,i)=>i===m?'（　）':x).join('、');
+    return fill(`找規律，（　）裡要填多少？<div class="big">${show}</div>`,t[m],`每一次都${s>0?'加':'減'} ${Math.abs(s)}，所以答案是 ${t[m]}。`)},
+  cmp(){const r=R(0,2);let x,y,L,Rr,exp;
+    if(r===0){x=R(120,980);y=x+pick([-90,-10,-1,1,10,90]);L=x;Rr=y;exp='先比百位，百位一樣再比十位，最後比個位。'}
+    else if(r===1){x=R(100,999);do{y=R(100,999)}while(y===x);L=x;Rr=y;exp='先比百位，百位大的數比較大。'}
+    else{const a=R(1,9),b=R(0,9),c=R(0,9);x=a*100+b*10+c;y=pick([x,x,x+10,x-10]);if(y<100)y=x;
+      L=`${a*100} ＋ ${b*10} ＋ ${c}`;Rr=y;exp=`${a*100} ＋ ${b*10} ＋ ${c} ＝ ${x}，再和 ${y} 比大小。`}
+    return cmpQ(L,Rr,x,y,exp)},
+  max(){const n1=R(150,950),c=new Set([n1]);while(c.size<3)c.add(Math.min(999,Math.max(100,n1+R(-60,60))));
+    const arr=[...c],big=R(0,1);const ans=big?Math.max(...arr):Math.min(...arr);
+    return mc(`下面三個數，哪一個最${big?'大':'小'}？`,ans,arr.filter(x=>x!==ans),`先比百位，再比十位、個位。最${big?'大':'小'}的是 ${ans}。`)},
+  round(){const m=R(0,3);let L,ans,exp;
+    if(m===0){const x=R(1,8),y=R(1,10-x);L=`${x*100} ＋ ${y*100}`;ans=(x+y)*100;exp=`${x} 個百 ＋ ${y} 個百 ＝ ${x+y} 個百，就是 ${ans}。`}
+    else if(m===1){const s=R(3,10),y=R(1,s-1);L=`${s*100} － ${y*100}`;ans=(s-y)*100;exp=`${s} 個百 － ${y} 個百 ＝ ${s-y} 個百，就是 ${ans}。`}
+    else if(m===2){const x=R(5,9),y=R(5,9);L=`${x*10} ＋ ${y*10}`;ans=(x+y)*10;exp=`${x} 個十 ＋ ${y} 個十 ＝ ${x+y} 個十，就是 ${ans}。`}
+    else{const a=R(10,19),b=R(2,9);L=`${a*10} － ${b*10}`;ans=(a-b)*10;exp=`${a} 個十 － ${b} 個十 ＝ ${a-b} 個十，就是 ${ans}。`}
+    return fill(`<div class="big">${L} ＝（　）</div>`,ans,exp)},
+  add2(){let a,b;do{a=R(11,78);b=R(11,78)}while(!(a%10+b%10>=10&&a+b<100));
+    return fill(eq2(a,b,'＋'),a+b,`個位 ${a%10} ＋ ${b%10} ＝ ${a%10+b%10}，滿 10 要進位。${a} ＋ ${b} ＝ ${a+b}。`)},
+  add2c(){const a=R(50,99),b=R(50,99);
+    return fill(eq2(a,b,'＋'),a+b,`${a} ＋ ${b} ＝ ${a+b}（和超過 100，會變成三位數）。`)},
+  sub2(){let a,b;do{a=R(31,99);b=R(11,a-2)}while(!(a%10<b%10));
+    return fill(eq2(a,b,'－'),a-b,`個位 ${a%10} 不夠減 ${b%10}，要向十位「退位」。${a} － ${b} ＝ ${a-b}。`)},
+  d3(){const x=R(110,880),y=R(11,99),add=R(0,1);
+    return fill(eq2(x,y,add?'＋':'－'),add?x+y:x-y,`${x} ${add?'＋':'－'} ${y} ＝ ${add?x+y:x-y}。`)},
+  vert(){let a,b,op;
+    if(R(0,1)){do{a=R(11,78);b=R(11,78)}while(!(a%10+b%10>=10&&a+b<100));op='+'}
+    else{do{a=R(31,99);b=R(11,a-2)}while(!(a%10<b%10));op='-'}
+    return fill(`用直式算算看：${vert(a,op,b)}答案是多少？`,op==='+'?a+b:a-b,`${a} ${op==='+'?'＋':'－'} ${b} ＝ ${op==='+'?a+b:a-b}。記得${op==='+'?'進位':'退位'}喔！`)},
+  mix(){const v=R(0,2);let a,b,c,L,ans;
+    if(v===0){a=R(20,50);b=R(10,40);c=R(5,a+b-1);L=`${a} ＋ ${b} － ${c}`;ans=a+b-c}
+    else if(v===1){do{a=R(50,99);b=R(10,40);c=R(10,40)}while(a-b-c<1);L=`${a} － ${b} － ${c}`;ans=a-b-c}
+    else{a=R(10,40);b=R(10,30);c=R(10,30);L=`${a} ＋ ${b} ＋ ${c}`;ans=a+b+c}
+    return fill(`從左邊算到右邊：<div class="big">${L} ＝（　）</div>`,ans,`從左邊一步一步算，答案是 ${ans}。`)},
+  missing(){const v=R(0,2);let a,b,c,L,ans;
+    if(v===0){a=R(12,50);b=R(11,40);c=a+b;L=`${a} ＋（　）＝ ${c}`;ans=b}
+    else if(v===1){b=R(11,40);c=R(12,50);a=b+c;L=`（　）－ ${b} ＝ ${c}`;ans=a}
+    else{a=R(40,99);b=R(11,a-5);c=a-b;L=`${a} －（　）＝ ${c}`;ans=b}
+    return fill(`<div class="big">${L}</div>`,ans,`想一想：${v===0?`${c} － ${a} ＝ ${b}`:v===1?`${b} ＋ ${c} ＝ ${a}`:`${a} － ${c} ＝ ${b}`}。`)},
+  addStory(){const n=pick(NAMES);let a=R(12,58),b=R(11,40);while(a+b>99)b=R(11,40);
+    const t=[`${n}有 ${a} 顆彈珠，媽媽又給了${n} ${b} 顆，現在一共有幾顆彈珠？`,
+      `班上有 ${a} 位男生、${b} 位女生，全班一共有幾位小朋友？`,
+      `果園裡有 ${a} 顆蘋果和 ${b} 顆橘子，水果一共有幾顆？`,
+      `${n}昨天看了 ${a} 頁故事書，今天又看了 ${b} 頁，一共看了幾頁？`];
+    return fill(pick(t),a+b,`要把兩個數合起來，用加法：${a} ＋ ${b} ＝ ${a+b}。`)},
+  subStory(){const n=pick(NAMES);const a=R(40,95),b=R(11,a-8);
+    const t=[`${n}有 ${a} 張貼紙，送給朋友 ${b} 張，還剩下幾張貼紙？`,
+      `盤子裡有 ${a} 塊餅乾，被吃掉 ${b} 塊，還剩下幾塊？`,
+      `公車上有 ${a} 位乘客，到站後下車了 ${b} 位，車上還有幾位乘客？`];
+    return fill(pick(t),a-b,`把一部分拿走，用減法：${a} － ${b} ＝ ${a-b}。`)},
+  diffStory(){const [n1,n2]=shuf(NAMES);const v=R(0,2);let a=R(40,95),b=R(15,a-8),d=a-b,stem;
+    if(v===0)stem=`紅色氣球有 ${a} 個，藍色氣球有 ${b} 個，紅色氣球比藍色氣球多幾個？`;
+    else if(v===1)stem=`${n1}有 ${a} 顆糖果，${n2}有 ${b} 顆糖果，${n2}再得到幾顆，才會和${n1}一樣多？`;
+    else{d=R(5,30);b=a-d;stem=`${n1}有 ${a} 張卡片，比${n2}多 ${d} 張，${n2}有幾張卡片？`;
+      return fill(stem,b,`比${n2}多 ${d} 張，所以${n2}是 ${a} － ${d} ＝ ${b} 張。`)}
+    return fill(stem,d,`比較多少，用減法：${a} － ${b} ＝ ${d}。`)},
+  lenConv(){const v=R(0,4),k=R(2,9);let stem,ans,exp;
+    if(v===0){stem='1 公尺 ＝（　）公分';ans=100;exp='1 公尺 ＝ 100 公分。'}
+    else if(v===1){stem=`${k} 公尺 ＝（　）公分`;ans=k*100;exp=`1 公尺 ＝ 100 公分，所以 ${k} 公尺 ＝ ${k*100} 公分。`}
+    else if(v===2){stem=`${k*100} 公分 ＝（　）公尺`;ans=k;exp=`100 公分 ＝ 1 公尺，所以 ${k*100} 公分 ＝ ${k} 公尺。`}
+    else if(v===3){const kk=R(1,4),r=pick([10,20,25,30,40,50,60,75]);stem=`${kk} 公尺 ${r} 公分 ＝（　）公分`;ans=kk*100+r;exp=`${kk} 公尺 ＝ ${kk*100} 公分，再加 ${r} 公分，共 ${ans} 公分。`}
+    else{const N=pick([110,120,125,130,140,150,160,175,180,190]);stem=`${N} 公分 ＝ 1 公尺 ＋（　）公分`;ans=N-100;exp=`1 公尺是 100 公分，${N} － 100 ＝ ${ans}。`}
+    return fill(`<div class="big">${stem}</div>`,ans,exp)},
+  unit(){const it=pick([['一塊橡皮擦長約 4','公分'],['一枝鉛筆長約 18','公分'],['教室的黑板長約 3','公尺'],['一棵大樹高約 10','公尺'],
+      ['小朋友的身高約 120','公分'],['書桌的高度約 70','公分'],['游泳池長約 25','公尺'],['一張床長約 2','公尺'],['一本課本寬約 20','公分'],['教室的長度約 9','公尺']]);
+    const o=it[1];return mc(`選出適合的單位：<div class="big">${it[0]}（　）</div>`,o,[o==='公分'?'公尺':'公分'],'比較短的東西用「公分」，比較長的東西用「公尺」。')},
+  lenCmp(){const k=pick([1,1,2]),x=k===1?pick([50,80,90,99,100,110,120,150]):pick([150,199,200,201,250]);
+    return cmpQ(`${k} 公尺`,`${x} 公分`,k*100,x,`${k} 公尺 ＝ ${k*100} 公分，再和 ${x} 公分比。`)},
+  ruler(f){const mode=f===undefined?R(0,1):f;let s=0,e;
+    if(mode===0){e=R(3,12)}else{s=R(1,4);e=s+R(3,8);if(e>12)e=12}
+    const len=e-s;
+    return fill(`這條彩帶有多長？${rulerSVG(s,e)}${mode===0?'彩帶從 0 開始量。':`彩帶從 ${s} 的位置量到 ${e} 的位置。`}<div class="big">長度是（　）公分</div>`,len,mode===0?`從 0 量到 ${e}，是 ${len} 公分。`:`${e} － ${s} ＝ ${len}，彩帶長 ${len} 公分。`)},
+  mult(max=5){const a=R(2,max),b=R(1,9);
+    return fill(`<div class="big">${a} × ${b} ＝（　）</div>`,a*b,b<=5?`${a} × ${b} 就是 ${b} 個 ${a} 相加：${Array(b).fill(a).join(' ＋ ')} ＝ ${a*b}。`:`${a} × ${b} 就是 ${b} 個 ${a} 相加，答案是 ${a*b}。`)},
+  multSum(){const a=R(2,6),k=R(3,6);
+    return fill(`<div class="big">${Array(k).fill(a).join(' ＋ ')} ＝ ${a} ×（　）</div>`,k,`有 ${k} 個 ${a} 相加，所以是 ${a} × ${k}。`)},
+  mulGrid(){const r=R(2,5),c=R(2,6),e=pick(['🍎','🍊','⭐','🍪','🚗','🐟','🌸']);
+    const rows=Array(r).fill(e.repeat(c)).join('<br>');
+    return fill(`看圖算一算，一共有幾個？<div class="grid">${rows}</div>`,r*c,`每排 ${c} 個，有 ${r} 排：${c} × ${r} ＝ ${r*c}。`)},
+  mulCmp(){const p=pick([[2,6,3,4],[5,3,4,4],[3,5,2,8],[4,5,5,4],[2,9,3,6],[5,2,3,3],[4,3,2,5],[5,5,4,6]]);
+    const [a,b,c,d]=R(0,1)?p:[p[2],p[3],p[0],p[1]];
+    return cmpQ(`${a} × ${b}`,`${c} × ${d}`,a*b,c*d,`${a} × ${b} ＝ ${a*b}，${c} × ${d} ＝ ${c*d}。`)},
+  multStory(){const p=pick([['盤','橘子','個'],['袋','蘋果','個'],['包','糖果','顆'],['籃','雞蛋','顆'],['排','椅子','張'],['盒','蠟筆','枝']]);
+    const a=R(2,6),b=R(2,6);
+    return fill(`每${p[0]}有 ${a} ${p[2]}${p[1]}，${b} ${p[0]}共有多少${p[2]}${p[1]}？`,a*b,`每${p[0]} ${a} ${p[2]}，有 ${b} ${p[0]}：${a} × ${b} ＝ ${a*b}。`)}
+};
+const ALLG=Object.values(G).filter(f=>f!==G.ruler).concat([()=>G.ruler()]);
+const rep=(f,n)=>Array(n).fill(f);
+
+const M1=[G.compose,G.digit,G.digit,G.seq,G.seq,G.cmp,G.cmp,G.max,G.round,G.round,G.add2,G.add2,G.add2c,G.sub2,G.sub2,G.vert,G.vert,G.addStory,G.subStory,G.diffStory];
+const M2=[...rep(G.lenConv,3),G.unit,G.unit,()=>G.ruler(0),()=>G.ruler(0),()=>G.ruler(1),G.lenCmp,G.mult,G.mult,G.mult,G.mult,G.multSum,G.mulGrid,G.mulGrid,G.mulCmp,G.multStory,G.multStory,G.multStory];
+const M3=[G.compose,G.cmp,G.seq,G.add2,G.sub2,G.d3,G.missing,G.mix,G.addStory,G.diffStory,G.lenConv,G.unit,()=>G.ruler(1),G.lenCmp,()=>G.mult(6),()=>G.mult(6),G.multSum,G.mulGrid,G.multStory,G.mulCmp];
+
+const CHI_ALL=[...CHI_A,...CHI_B,...CHI_C];
+const PAPERS=[
+  {id:'c1',subj:'chi',title:'甲卷',sub:'注音、量詞、相反詞、部首、短文閱讀',build:()=>CHI_A.map(prep)},
+  {id:'c2',subj:'chi',title:'乙卷',sub:'詞語、句子、筆畫、短文閱讀',build:()=>CHI_B.map(prep)},
+  {id:'c3',subj:'chi',title:'丙卷',sub:'綜合複習、同音字、標點、短文閱讀',build:()=>CHI_C.map(prep)},
+  {id:'c4',subj:'chi',title:'隨機挑戰',sub:'從所有國語題目隨機抽 20 題',build:()=>shuf(CHI_ALL).slice(0,20).map(prep)},
+  {id:'m1',subj:'mat',title:'甲卷',sub:'一千以內的數、加法與減法',build:()=>M1.map(f=>prep(f()))},
+  {id:'m2',subj:'mat',title:'乙卷',sub:'公分與公尺、乘法',build:()=>M2.map(f=>prep(f()))},
+  {id:'m3',subj:'mat',title:'丙卷',sub:'綜合應用題',build:()=>M3.map(f=>prep(f()))},
+  {id:'m4',subj:'mat',title:'隨機挑戰',sub:'每次題目都不一樣，20 題',build:()=>Array.from({length:20},()=>prep(pick(ALLG)()))}
+].map(p=>({...p,subjName:p.subj==='chi'?'國語':'數學'}));
+
+/* ============ 判分 ============ */
+const norm=s=>String(s).replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/\s+/g,'');
+const same=(user,accept)=>{const u=norm(user);return u!==''&&accept.some(a=>{const x=norm(a);return u===x||(!isNaN(u)&&!isNaN(x)&&Number(u)===Number(x))})};
+
+/* ============ 音效 ============ */
+const state={mode:'practice',sound:true};
+let ac=null;
+function tone(f,d,type,delay){if(!state.sound)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();
+  const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+(delay||0);o.type=type||'sine';o.frequency.value=f;o.connect(g);g.connect(ac.destination);
+  g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d)}catch(e){}}
+const sfx={ok(){tone(660,.15);tone(880,.25,'sine',.12)},bad(){tone(220,.3,'triangle')},win(){[523,659,784,1046].forEach((f,i)=>tone(f,.25,'sine',i*.13))}};
+
+/* ============ 畫面 ============ */
+let Q=null;
+const render=h=>{app.innerHTML=h;window.scrollTo(0,0)};
+
+function home(){
+  Q=null;
+  const best=store('g2-best')||{},name=store('g2-name')||'';
+  const sec=(subj,label,emoji)=>`<section class="subj ${subj}"><h2>${emoji} ${label}</h2><div class="papers">`+
+    PAPERS.filter(p=>p.subj===subj).map(p=>`<button class="paper" data-id="${p.id}"><span class="pt">${p.title}</span><span class="ps">${p.sub}</span><span class="pb">${best[p.id]!=null?'⭐ 最高 '+best[p.id]+' 分':'還沒練習'}</span></button>`).join('')+`</div></section>`;
+  render(`<header class="hero"><div class="mascot">🦊</div><h1>二年級上學期 期中考練習</h1><p>${name?`${name.replace(/[<>&]/g,'')}，`:''}選一份試卷開始吧！每份 20 題，每題 5 分</p></header>
+  <div class="panel">
+    <div class="row"><label for="nm">我的名字</label><input class="name" id="nm" maxlength="8" placeholder="（可以不寫）" value="${name.replace(/["<>&]/g,'')}"></div>
+    <div class="row" style="margin-top:10px"><label>練習方式</label>
+      <button class="pill" data-mode="practice">😊 練習模式</button><button class="pill" data-mode="exam">📝 考試模式</button>
+      <button class="pill" id="snd"></button></div>
+    <p class="hint" id="mh"></p>
+  </div>
+  ${sec('chi','國語','📖')}${sec('mat','數學','🔢')}
+  <footer>題目為依二年級上學期學習重點自編的練習題，與各版本教科書課文無關。<br>數學題的數字每次都會重新產生。</footer>`);
+  const upd=()=>{app.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('on',b.dataset.mode===state.mode));
+    $('#snd').textContent=state.sound?'🔊 音效開':'🔇 音效關';$('#snd').classList.toggle('on',state.sound);
+    $('#mh').textContent=state.mode==='practice'?'每答一題，馬上告訴你對不對，還會有小提示。':'全部寫完才看成績，像真的考試一樣。'};
+  app.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;upd()});
+  $('#snd').onclick=()=>{state.sound=!state.sound;upd()};
+  $('#nm').onchange=e=>store('g2-name',e.target.value.trim());
+  app.querySelectorAll('.paper').forEach(b=>b.onclick=()=>startPaper(PAPERS.find(p=>p.id===b.dataset.id)));
+  upd();
+}
+const $=s=>app.querySelector(s);
+
+function startPaper(paper,o){
+  o=o||{};
+  Q={paper,qs:o.qs||paper.build(),i:0,res:[],retry:!!o.retry,mode:o.retry?'practice':state.mode};
+  showQ();
+}
+
+function showQ(){
+  const q=Q.qs[Q.i],n=Q.qs.length,last=Q.i===n-1;
+  const body=q.t==='mc'
+    ?`<div class="opts">${q.opts.map((o,k)=>`<button class="opt" data-k="${k}"><span class="lt">${'ABCD'[k]}</span><span class="tx"></span></button>`).join('')}</div>`
+    :`<div class="fillrow"><input id="ans" type="text" inputmode="numeric" autocomplete="off" autocapitalize="off" placeholder="寫答案" aria-label="答案"></div>`;
+  render(`<div class="top"><button class="ghost" id="back">← 回首頁</button><div class="ttl">${Q.paper.subjName}${Q.paper.title}${Q.retry?'・錯題重練':''}</div><div class="cnt">${Q.i+1} / ${n}</div></div>
+    <div class="bar"><i style="width:${Math.round(Q.i/n*100)}%"></i></div>
+    <div class="qcard">${q.passage?`<div class="passage"><div class="ptag">📖 先讀短文</div>${q.passage}</div>`:''}
+      <span class="qno">第 ${Q.i+1} 題</span><div class="stem">${q.stem}</div>${body}<div id="fb"></div></div>
+    <div class="actions"><button class="go" id="go" disabled>確定</button></div>`);
+  const go=$('#go');let sel=null,locked=false;
+  $('#back').onclick=()=>{if(confirm('要離開嗎？這次的作答不會保留喔。'))home()};
+  if(q.t==='mc'){
+    app.querySelectorAll('.opt .tx').forEach((s,k)=>s.textContent=q.opts[k]);
+    app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(locked)return;sel=+b.dataset.k;
+      app.querySelectorAll('.opt').forEach(x=>x.classList.toggle('sel',x===b));go.disabled=false});
+  }else{
+    const inp=$('#ans');inp.oninput=()=>{go.disabled=!inp.value.trim()};inp.focus({preventScroll:true});
+  }
+  go.onclick=()=>{
+    if(locked){Q.i++;Q.i>=n?results():showQ();return}
+    const user=q.t==='mc'?q.opts[sel]:$('#ans').value.trim();
+    const ok=q.t==='mc'?user===q.correct:same(user,q.accept);
+    Q.res.push({q,user,ok});
+    if(Q.mode==='exam'){Q.i++;Q.i>=n?results():showQ();return}
+    locked=true;ok?sfx.ok():sfx.bad();
+    const correctText=q.t==='mc'?q.correct:q.accept[0];
+    if(q.t==='mc')app.querySelectorAll('.opt').forEach(b=>{b.disabled=true;b.classList.remove('sel');
+      if(q.opts[+b.dataset.k]===q.correct)b.classList.add('right');else if(+b.dataset.k===sel)b.classList.add('wrong')});
+    else{const inp=$('#ans');inp.readOnly=true;inp.classList.add(ok?'right':'wrong')}
+    const e=document.createElement('div');e.className='fb '+(ok?'ok':'no');
+    e.innerHTML=`<b class="t">${ok?'🎉 答對了！好棒！':'😮 再想一想'}</b>`;
+    if(!ok){const p=document.createElement('div');p.textContent='正確答案：'+correctText;e.appendChild(p)}
+    if(q.exp){const x=document.createElement('div');x.className='ex';x.textContent='💡 '+q.exp;e.appendChild(x)}
+    $('#fb').appendChild(e);go.textContent=last?'看成績 🎉':'下一題 ➜';go.focus();
+  };
+}
+
+function results(){
+  const {paper,qs,res,retry}=Q,n=qs.length,right=res.filter(r=>r.ok).length,score=Math.round(right*100/n);
+  if(!retry){const b=store('g2-best')||{};if(b[paper.id]==null||score>b[paper.id]){b[paper.id]=score;store('g2-best',b)}}
+  const stars=score>=90?3:score>=70?2:1;
+  const msg=score===100?'太厲害了，滿分！':score>=90?'好棒！快要滿分了！':score>=70?'不錯喔！再檢查錯的題目就更好！':'沒關係，看看錯的題目，再練一次會更棒！';
+  const wrong=res.filter(r=>!r.ok);
+  render(`<div class="result"><div class="qcard">
+    <div class="stars">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+    <div class="score">${score}<small> 分</small></div>
+    <div class="msg">${msg}</div><div>答對 ${right} 題，答錯 ${wrong.length} 題${retry?'（錯題重練）':''}</div>
+    <div class="btns">${wrong.length?'<button class="btn warn" id="rw">✏️ 只練錯的題目</button>':''}
+      <button class="btn main" id="again">🔄 再練一次</button><button class="btn" id="hm">🏠 回首頁</button></div></div>
+    ${wrong.length?`<h3>📌 要再複習的題目</h3><div id="wl"></div>`:'<div class="allok">🎊 全部答對，沒有需要複習的題目！</div>'}</div>`);
+  const wl=$('#wl');
+  if(wl)wrong.forEach(r=>{const d=document.createElement('div');d.className='wr';
+    d.innerHTML=`${r.q.passage?`<div class="passage">${r.q.passage}</div>`:''}<div class="stem">${r.q.stem}</div>`;
+    const a=document.createElement('div');a.innerHTML='<span class="you"></span><br><span class="rt"></span>';
+    a.querySelector('.you').textContent='你的答案：'+(r.user||'（沒寫）');
+    a.querySelector('.rt').textContent='正確答案：'+(r.q.t==='mc'?r.q.correct:r.q.accept[0]);
+    d.appendChild(a);if(r.q.exp){const x=document.createElement('div');x.className='ex';x.textContent='💡 '+r.q.exp;d.appendChild(x)}
+    wl.appendChild(d)});
+  $('#again').onclick=()=>startPaper(paper);$('#hm').onclick=home;
+  if($('#rw'))$('#rw').onclick=()=>startPaper(paper,{qs:wrong.map(r=>r.q),retry:true});
+  if(score>=90){sfx.win();const c=document.createElement('div');c.className='confetti';
+    for(let i=0;i<28;i++){const s=document.createElement('span');s.textContent=pick(['🎉','⭐','🌟','🎈','✨']);
+      s.style.left=R(0,96)+'%';s.style.animationDuration=(2+Math.random()*2.5)+'s';s.style.animationDelay=(Math.random()*1.2)+'s';c.appendChild(s)}
+    document.body.appendChild(c);setTimeout(()=>c.remove(),6500)}
+}
+
+if(typeof document!=='undefined'){
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Enter'||e.target.tagName==='BUTTON')return;
+    const g=document.getElementById('go');if(g&&!g.disabled){e.preventDefault();g.click()}});
+  home();
+}
+</script>
+</body>
+</html>
